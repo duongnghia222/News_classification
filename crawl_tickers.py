@@ -17,13 +17,23 @@ def create_driver():
     return driver
 
 
-def get_data_from_table(soup):
+def get_data_from_table(soup, url):
     data = []
-    table = soup.find("table", {"id": "_tableDatas"})
-    for row in table.tbody.find_all("tr"):
-        cols = row.find_all("td")
-        cols = [col.text.strip() for col in cols]
-        data.append(cols)
+    if url == "https://www.hsx.vn/Modules/Listed/Web/Symbols?":
+        id_ = "symbols-grid"
+        table = soup.find("table", {"id": id_})
+        for row in table.tbody.find_all("tr")[1:]:
+            cols = row.find_all("td")[1:]
+            cols = [col.text.strip() for col in cols]
+            data.append(cols)
+
+    else:
+        id_ = "_tableDatas"
+        table = soup.find("table", {"id": id_})
+        for row in table.tbody.find_all("tr"):
+            cols = row.find_all("td")
+            cols = [col.text.strip() for col in cols]
+            data.append(cols)
     return data
 
 # Create a function to crawl data
@@ -32,26 +42,32 @@ def crawl_data(url, file_name = "file.csv"):
     driver.get(url)
 
     # Wait for the page to load
-    time.sleep(1)
+    time.sleep(5)
 
     # Find the number of pages to crawl
     soup = BeautifulSoup(driver.page_source, "html.parser")
-    num_pages = int(soup.find("span", {"id": "end"}).parent.get("onclick").split("(")[1].split(")")[0])
 
+    if url == "https://www.hsx.vn/Modules/Listed/Web/Symbols?":
+        num_pages = 14  # hardcode
+    else:
+        num_pages = int(soup.find("span", {"id": "end"}).parent.get("onclick").split("(")[1].split(")")[0])
     # Initialize data
     data = []
 
     for page_num in range(1, num_pages + 1):
         print(f"Crawling page {page_num}")
         # Use JavaScript to navigate to the page
-        driver.execute_script(f"page({page_num})")
+        if url == "https://www.hsx.vn/Modules/Listed/Web/Symbols?":
+            driver.execute_script(f"$.fn.gridPaging.flip('DbGridPager_1', {page_num}, 14);")
+            time.sleep(8)
+        else:
+            driver.execute_script(f"page({page_num})")
+            time.sleep(3)
 
-        # Wait for the page to load
-        time.sleep(5)
 
         # Parse the page source and extract data
         soup = BeautifulSoup(driver.page_source, "html.parser")
-        page_data = get_data_from_table(soup)
+        page_data = get_data_from_table(soup, url)
         data.extend(page_data)
 
     # Close the driver
@@ -61,13 +77,16 @@ def crawl_data(url, file_name = "file.csv"):
     cols = ["STT", "Stock Code", "Organization Name", "Sector", "First Trading Date", "Listing Volume", "Stock Volume"]
     if url == "https://www.hnx.vn/vi-vn/cophieu-etfs/chung-khoan-uc.html":
         cols.remove("Sector")
+    elif url == "https://www.hsx.vn/Modules/Listed/Web/Symbols?":
+        cols = ["Stock Code", "ISIN Code", "FIGI Code", "Organization Name", "Listing Volume", "Stock Volume", "First Trading Date"]
     df = pd.DataFrame(data, columns=cols)
 
     # Save the DataFrame to a CSV file
     df.to_csv(file_name, index=False, encoding="utf-8-sig")
 
 # Start the crawling
-file_name = "uc_tickers.csv"
+file_name = "hose_tickers.csv"  # change name
 hnx_link = "https://www.hnx.vn/vi-vn/cophieu-etfs/chung-khoan-ny.html"
 uc_link = "https://www.hnx.vn/vi-vn/cophieu-etfs/chung-khoan-uc.html"
-crawl_data(uc_link, file_name)
+hose_link = "https://www.hsx.vn/Modules/Listed/Web/Symbols?"
+crawl_data(hose_link, file_name)
