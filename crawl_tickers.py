@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 
 def create_driver():
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Uncomment this line to run in headless mode
+    #chrome_options.add_argument("--headless")  # Uncomment this line to run in headless mode
 
     # Set path to chromedriver as per your configuration
     service = Service(executable_path='C:/Program Files (x86)/chrome_driver/chromedriver')
@@ -85,7 +85,7 @@ def crawl_data(url, file_name = "file.csv"):
     df.to_csv(file_name, index=False, encoding="utf-8-sig")
 
 # Start the crawling
-file_name = "hose_tickers.csv"  # change name
+file_name = "t_tickers.csv"  # change name
 hnx_link = "https://www.hnx.vn/vi-vn/cophieu-etfs/chung-khoan-ny.html"
 uc_link = "https://www.hnx.vn/vi-vn/cophieu-etfs/chung-khoan-uc.html"
 hose_link = "https://www.hsx.vn/Modules/Listed/Web/Symbols?"
