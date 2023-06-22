@@ -3,10 +3,6 @@ import requests
 import json
 import os
 
-if os.path.exists('news_links_vietnambiz_1.json'):
-    with open('news_links_vietnambiz_1.json', 'r', encoding='utf-8') as f:
-        data = json.load(f)
-
 
 def crawl_text(url):
     response = requests.get(url)
@@ -38,7 +34,20 @@ def loop_item(start, end):
         text, item_tags = crawl_text(data[i]['Link'])
         print(text)
         print(item_tags)
+        output.append(
+            {
+                'Title': data[i]['Title'],
+                'Content': text,
+                'Tags': item_tags
+            }
+        )
 
 
+if os.path.exists('news_links_vietnambiz_1.json'):
+    with open('news_links_vietnambiz_1.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
 number_of_item = len(data)
+output = []
 loop_item(1, 20)
+with open('data_vietnambiz_test.json', 'w', encoding='utf-8') as f:
+    json.dump(output, f, ensure_ascii=False, indent=4)
