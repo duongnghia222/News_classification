@@ -48,6 +48,6 @@ if os.path.exists('news_links_vietnambiz_1.json'):
         data = json.load(f)
 number_of_item = len(data)
 output = []
-loop_item(1, 20)
+loop_item(1, 50)
 with open('data_vietnambiz_test.json', 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=4)
