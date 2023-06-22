@@ -93,9 +93,9 @@ def crawl_links(last_time=None):
 
 def crawl_items():
     # Load existing data
-    if os.path.exists('news_links.json'):
+    if os.path.exists('news_links_tinnhanhchungkhoan.json'):
         print("---- Continue ----")
-        with open('news_links.json', 'r', encoding='utf-8') as f:
+        with open('news_links_tinnhanhchungkhoan.json', 'r', encoding='utf-8') as f:
             existing_data = json.load(f)
             last_time = existing_data[-1]["Time"]
             existing_data.extend(crawl_links(last_time))
@@ -106,7 +106,7 @@ def crawl_items():
 
     print("Total:", len(existing_data))
     # Save the data to a JSON file
-    with open('news_links.json', 'w', encoding='utf-8') as f:
+    with open('news_links_tinnhanhchungkhoan.json', 'w', encoding='utf-8') as f:
         json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
 
