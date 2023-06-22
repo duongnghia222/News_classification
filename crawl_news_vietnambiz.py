@@ -1,4 +1,3 @@
-import time
 from bs4 import BeautifulSoup
 import requests
 import json
@@ -50,7 +49,6 @@ def crawl_links(last_time=None):
             data_all.extend(parse_html(web_url, last_time))
         else:
             data_all.extend(parse_html(web_url))
-        time.sleep(1)
     return data_all
 
 
