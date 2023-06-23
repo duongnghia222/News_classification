@@ -64,7 +64,7 @@ if os.path.exists('data_vietnambiz_1_1.json'):
         output = json.load(f)
 else:
     output = []
-loop_item(len(output), len(output) + 1500)
+loop_item(len(output), len(output) + 100)
 with open('data_vietnambiz_1_1.json', 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=4)
 
