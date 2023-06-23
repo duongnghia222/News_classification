@@ -13,7 +13,10 @@ def crawl_text(url):
         # Append the text within this div to the string
         extracted_text += sapo_div.get_text(strip=True)
     content_div = soup.find('div', class_=lambda value: value and ('vnbcbc-body vceditor-content' in value))
+    if not content_div:
+        return None, None
     p_tags = content_div.find_all("p")
+
     for p in p_tags:
         # Append the text within each p tag to the string
         extracted_text += p.get_text(strip=True)
@@ -30,24 +33,42 @@ def crawl_text(url):
 
 def loop_item(start, end):
     for i in range(start, end):
+        # guard
+        if i >= number_of_item:
+            break
         print("Item", i)
+
         text, item_tags = crawl_text(data[i]['Link'])
+        if text is None and item_tags is None:
+            continue
         print(text)
         print(item_tags)
-        output.append(
-            {
+        item = {
                 'Title': data[i]['Title'],
                 'Content': text,
                 'Tags': item_tags
-            }
-        )
+        }
+        if item not in output:
+            output.append(item)
+        else:
+            print("skip")
 
 
 if os.path.exists('news_links_vietnambiz_1.json'):
     with open('news_links_vietnambiz_1.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
 number_of_item = len(data)
-output = []
-loop_item(1, 50)
+
+if os.path.exists('data_vietnambiz_test.json'):
+    print("---- Continue ----")
+    with open('data_vietnambiz_test.json', 'r', encoding='utf-8') as f:
+        output = json.load(f)
+else:
+    output = []
+loop_item(len(output), len(output) + 100)
 with open('data_vietnambiz_test.json', 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=4)
+
+
+
+
