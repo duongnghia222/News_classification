@@ -53,19 +53,19 @@ def loop_item(start, end):
             print("skip")
 
 
-if os.path.exists('news_links_vietnambiz_1.json'):
-    with open('news_links_vietnambiz_1.json', 'r', encoding='utf-8') as f:
+if os.path.exists('news_links_vietnambiz_2.json'):
+    with open('news_links_vietnambiz_2.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
 number_of_item = len(data)
 
-if os.path.exists('data_vietnambiz_1_1.json'):
+if os.path.exists('data_vietnambiz_1_2.json'):
     print("---- Continue ----")
-    with open('data_vietnambiz_1_1.json', 'r', encoding='utf-8') as f:
+    with open('data_vietnambiz_1_2.json', 'r', encoding='utf-8') as f:
         output = json.load(f)
 else:
     output = []
-loop_item(len(output), len(output) + 100)
-with open('data_vietnambiz_1_1.json', 'w', encoding='utf-8') as f:
+loop_item(len(output), len(output) + 2000)
+with open('data_vietnambiz_1_2.json', 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=4)
 
 
