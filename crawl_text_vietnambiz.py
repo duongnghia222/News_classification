@@ -41,7 +41,6 @@ def loop_item(start, end):
         text, item_tags = crawl_text(data[i]['Link'])
         if text is None and item_tags is None:
             continue
-        print(text)
         print(item_tags)
         item = {
                 'Title': data[i]['Title'],
@@ -59,14 +58,14 @@ if os.path.exists('news_links_vietnambiz_1.json'):
         data = json.load(f)
 number_of_item = len(data)
 
-if os.path.exists('data_vietnambiz_test.json'):
+if os.path.exists('data_vietnambiz_1_1.json'):
     print("---- Continue ----")
-    with open('data_vietnambiz_test.json', 'r', encoding='utf-8') as f:
+    with open('data_vietnambiz_1_1.json', 'r', encoding='utf-8') as f:
         output = json.load(f)
 else:
     output = []
-loop_item(len(output), len(output) + 100)
-with open('data_vietnambiz_test.json', 'w', encoding='utf-8') as f:
+loop_item(len(output), len(output) + 1500)
+with open('data_vietnambiz_1_1.json', 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=4)
 
 
