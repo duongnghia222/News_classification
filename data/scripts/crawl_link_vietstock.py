@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
-NUMBER_OF_PAGES_CRAWL = 3
+NUMBER_OF_PAGES_CRAWL = 380
 
 WEBDRIVER_DELAY_TIME_INT = 5
 chrome_options = webdriver.ChromeOptions()

@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
-WEBDRIVER_DELAY_TIME_INT = 3
+WEBDRIVER_DELAY_TIME_INT = 5
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
@@ -37,7 +37,7 @@ def crawl_text(url, title= None):
         return "", ""
 
 
-with open('./dat/contents/news_links_vietstock.json', 'r', encoding='utf-8') as f:
+with open('./../contents/news_links_vietstock.json', 'r', encoding='utf-8') as f:
     data =json.load(f)
 
 result = []
