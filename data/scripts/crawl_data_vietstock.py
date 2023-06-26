@@ -56,10 +56,9 @@ for idx in tqdm(range(len(data))):
         'tags': tags
     }
     result.append(dictionary)
-    if idx == 4: break
 
 if os.path.exists('./data/contents/news_data_vietstock.json'):
     os.remove('./data/contents/news_data_vietstock.json')
-import json
+
 with open('./data/contents/news_data_vietstock.json', 'w+', encoding='utf-8') as f:
     json.dump(result, f, ensure_ascii=False, indent=4)
