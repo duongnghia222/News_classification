@@ -10,13 +10,14 @@ pip install selenium
 |       |-- hnx_tickers.csv
 |       |-- hose_tickers.csv
 |       |-- uc_tickers.csv
-|   |-- content
-|       |-- news_data_vietstock.json
+|   |-- links
 |       |-- news_link_vietstock.json
-|       |-- news_data_vietnambiz.json
 |       |-- news_link_vietnambiz.json
-|       |-- news_data_nguoiquansat.json
 |       |-- news_link_nguoiquansat.json
+|   |-- contents
+|       |-- news_data_vietstock.json
+|       |-- news_data_vietnambiz.json
+|       |-- news_data_nguoiquansat.json
 |   |-- scripts
 |       |-- crawl_data_vietstock.py    # ---export---> news_data_vietstock.json
 |       |-- crawl_link_vietstock.py    # ---export---> news_link_vietstock.json
@@ -30,7 +31,8 @@ pip install selenium
 |-- weights
 |-- utils
     |-- split_json.py
-|-- auto_label.py
+    |-- remove_duplicated_items.py
+    |-- auto_label.py
 |-- infer.py
 |-- requirements.txt
 |-- README.md

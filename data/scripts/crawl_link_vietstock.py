@@ -54,8 +54,8 @@ for _ in tqdm(range(NUMBER_OF_PAGES_CRAWL)):
 
 print(result)
 
-if os.path.exists('./data/contents/news_links_vietstock.json'):
-    os.remove('./data/contents/news_links_vietstock.json')
+if os.path.exists('./data/links/news_link_vietstock.json'):
+    os.remove('./data/links/news_link_vietstock.json')
 import json
-with open('./data/contents/news_links_vietstock.json', 'w+', encoding='utf-8') as f:
+with open('./data/links/news_link_vietstock.json', 'w+', encoding='utf-8') as f:
     json.dump(result, f, ensure_ascii=False, indent=4)

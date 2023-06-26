@@ -77,9 +77,9 @@ def crawl_items():
     """
 
     # Kiểm tra xem tệp JSON đã tồn tại chưa
-    if os.path.exists('link_nguoiquansat.json'):
+    if os.path.exists('./data/links/news_link_nguoiquansat.json'):
         print("---- Continue ----")
-        with open('link_nguoiquansat.json', 'r', encoding='utf-8') as f:
+        with open('./data/links/news_link_nguoiquansat.json', 'r', encoding='utf-8') as f:
             # Nếu tệp đã tồn tại, tải dữ liệu từ tệp và lấy thời gian cuối cùng để truyền vào crawl_links
             existing_data = json.load(f)
             #last_time = existing_data[-1]["Time"]
@@ -93,7 +93,7 @@ def crawl_items():
     #print(existing_data)
 
     # Lưu dữ liệu vào tệp JSON
-    with open('link_nguoiquansat.json', 'w', encoding='utf-8') as f:
+    with open('./data/links/news_link_nguoiquansat.json', 'w', encoding='utf-8') as f:
         json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
 

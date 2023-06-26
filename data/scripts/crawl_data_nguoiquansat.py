@@ -10,7 +10,7 @@ data_all =[]
 contents = []
 
     # Lấy link từ từng item
-with open('link_nguoiquansat.json', 'r', encoding='utf-8-sig') as file:  # Thêm '-sig' để tự động loại bỏ BOM
+with open('./data/links/news_link_nguoiquansat.json', 'r', encoding='utf-8-sig') as file:  # Thêm '-sig' để tự động loại bỏ BOM
     data = json.load(file)
     
 for item in data:
@@ -67,5 +67,5 @@ for item in data:
 data_all.extend(contents)
 
 # Ghi nội dung đã lấy được vào file json mới
-with open('text_nguoiquansat.json', 'w', encoding='utf-8') as file:
+with open('./data/contents/news_data_nguoiquansat.json', 'w+', encoding='utf-8') as file:
     json.dump(data_all, file,ensure_ascii=False,indent=4)

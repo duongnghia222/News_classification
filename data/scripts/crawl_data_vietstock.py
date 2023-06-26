@@ -43,7 +43,7 @@ def crawl_text_and_tags(url, headers= HEADERS):
         return news_tags     
     return crawl_text(), crawl_tags()
 
-with open('./data/contents/news_links_vietstock.json', 'r', encoding='utf-8') as f:
+with open('./data/links/news_links_vietstock.json', 'r', encoding='utf-8') as f:
     data =json.load(f)
 
 result = []
