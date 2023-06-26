@@ -13,3 +13,10 @@ print(req.status_code)
 print(req.text)
 output = []
 print(len(output))
+
+'''
+    data = {
+        'content': content,
+        'label': Mã chứng khoán (Ticker)
+    }
+'''
