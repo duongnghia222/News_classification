@@ -1,6 +1,32 @@
 import json
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
+import pandas as pd
+import re
+
+list_stock_codes = []
+df_hose_tickers = pd.read_csv('../data/tickers/hose_tickers.csv')
+df_hnx_tickers = pd.read_csv('../data/tickers/hnx_tickers.csv')
+df_uc_tickers = pd.read_csv('../data/tickers/uc_tickers.csv')
+list_stock_codes.extend(df_hose_tickers['Stock Code'].tolist())
+list_stock_codes.extend(df_hnx_tickers['Stock Code'].tolist())
+list_stock_codes.extend(df_uc_tickers['Stock Code'].tolist())
+print('qcg'.upper() in list_stock_codes)
+
+
+def predict_label(text, tags):
+    # if tag contain stock code then return it
+    for tag in tags:
+        if tag.upper() in list_stock_codes:
+            return str(tag).upper()
+    matches = re.findall(r"\(Mã: ([A-Z]{3})\)", text)
+    print(matches)
+    if len(matches) > 3:
+        return ""
+    for match in matches:
+        if match in list_stock_codes:
+            return str(match).upper()
+    return ""
 
 
 class DataVisualizer:
@@ -66,7 +92,7 @@ class DataVisualizer:
         self.tag_text.config(state=DISABLED)
 
         self.label_entry.delete(0, END)
-        self.label_entry.insert(0, self.init_text)
+        self.label_entry.insert(0, str(predict_label(item["Content"], item["Tags"])))
 
     def save_changes(self):
         self.data[self.index]["Label"] = self.label_entry.get()
