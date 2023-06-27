@@ -39,14 +39,14 @@ class DataVisualizer:
 
         label_frame = Frame(self.root)
         label_frame.pack(fill=BOTH, expand=True)
-        Label(label_frame, text="Label").pack()
-        self.label_entry.pack()
+        Label(label_frame, text="Label").pack(side=LEFT)
+        self.label_entry.pack(pady=(0, 40))
 
-        Button(label_frame, text="Save Changes", command=self.save_changes).pack()
-        Button(label_frame, text="Next", command=self.next_item).pack()
+        Button(label_frame, text="Save Changes", command=self.save_changes).pack(side=RIGHT)
 
         self.root.bind('<Return>', lambda event: self.save_changes())
         self.root.bind('<Right>', lambda event: self.next_item())
+        self.root.bind('<Left>', lambda event: self.previous_item())  # Bind left arrow to go back to the previous item
 
     def load_item(self):
         item = self.data[self.index]
@@ -73,9 +73,14 @@ class DataVisualizer:
         print("Saved changes")
 
     def next_item(self):
-        # self.save_changes()  # You might want to save changes before moving to the next item
         self.index += 1
         if self.index < len(self.data):
+            self.load_item()
+        return "break"
+
+    def previous_item(self):  # This method will load the previous item
+        if self.index > 0:
+            self.index -= 1
             self.load_item()
         return "break"
 
