@@ -10,7 +10,7 @@ class DataVisualizer:
         self.root = root
         self.filepath = filepath
         self.title_text = Text(height=2, width=100, font=("Times New Roman", 12), state=DISABLED)
-        self.content_text = ScrolledText(height=20, width=100, font=("Times New Roman", 12), state=DISABLED)
+        self.content_text = ScrolledText(height=20, width=100, font=("Times New Roman", 12), state=DISABLED, wrap=WORD)
         self.tag_text = Text(height=1, width=100, font=("Times New Roman", 12), state=DISABLED)
         self.index_text = Text(height=1, width=1, font=("Times New Roman", 12), state=DISABLED)
         self.word_count = Text(height=1, width=1, font=("Times New Roman", 12), state=DISABLED)
@@ -30,7 +30,7 @@ class DataVisualizer:
         goto_frame.pack(side=RIGHT)
         self.goto_button.place(x=910, y=120, width=70, height=25)
         self.goto_entry.place(x=930, y=90, width=30, height=25)
-        self.index_text.place(x=910, y=30, width=70, height=25)
+        self.index_text.place(x=910, y=30, width=80, height=25)
         Label(text="Word Count").place(x=910, y=250, width=70, height=25)
         self.word_count.place(x=930, y=280, width=40, height=25)
 
@@ -146,4 +146,4 @@ def hand_label(filepath):
     root.mainloop()
 
 
-hand_label(filepath="../data/contents/data_vietnambiz_1_2.json")
+hand_label(filepath="../data/contents/data_vietnambiz_1_1.json")
