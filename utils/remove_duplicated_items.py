@@ -14,8 +14,8 @@ def remove_duplicates_items(file_path):
 
 # Usage example
 # remove_duplicates_items('news_links_tinnhanhchungkhoan.json')
-remove_duplicates_items('./data/contents/data_vietstock.json')
-remove_duplicates_items('./data/contents/data_vietnambiz_1_1.json')
-remove_duplicates_items('./data/contents/data_vietnambiz_1_2.json')
-remove_duplicates_items('./data/contents/data_nguoiquansat.json')
+remove_duplicates_items('../data/contents/data_vietstock.json')
+remove_duplicates_items('../data/contents/data_vietnambiz_1_1.json')
+remove_duplicates_items('../data/contents/data_vietnambiz_1_2.json')
+remove_duplicates_items('../data/contents/data_nguoiquansat.json')
 

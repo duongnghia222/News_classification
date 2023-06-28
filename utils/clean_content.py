@@ -2,7 +2,7 @@ import re
 import json
 
 
-def remove_duplicates_items(file_path):
+def clean_content(file_path):
     with open(file_path, 'r', encoding='utf-8') as json_file:
         data = json.load(json_file)
 
@@ -13,4 +13,4 @@ def remove_duplicates_items(file_path):
         json.dump(data, json_file, ensure_ascii=False, indent=4)
 
 
-remove_duplicates_items("../data/contents/data_vietnambiz_1_2.json")
+clean_content("../data/contents/data_vietnambiz_1_2.json")

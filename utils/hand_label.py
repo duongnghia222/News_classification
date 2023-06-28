@@ -1,8 +1,8 @@
 import json
+import re
+import pandas as pd
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
-import pandas as pd
-import re
 
 list_stock_codes = []
 df_hose_tickers = pd.read_csv('../data/tickers/hose_tickers.csv')
@@ -11,16 +11,13 @@ df_uc_tickers = pd.read_csv('../data/tickers/uc_tickers.csv')
 list_stock_codes.extend(df_hose_tickers['Stock Code'].tolist())
 list_stock_codes.extend(df_hnx_tickers['Stock Code'].tolist())
 list_stock_codes.extend(df_uc_tickers['Stock Code'].tolist())
-print('qcg'.upper() in list_stock_codes)
 
 
 def predict_label(text, tags):
-    # if tag contain stock code then return it
     for tag in tags:
         if tag.upper() in list_stock_codes:
             return str(tag).upper()
     matches = re.findall(r"\(Mã: ([A-Z]{3})\)", text)
-    print(matches)
     if len(matches) > 3:
         return ""
     for match in matches:
@@ -30,23 +27,30 @@ def predict_label(text, tags):
 
 
 class DataVisualizer:
-    def __init__(self, data, root):
+    def __init__(self, data, root, filepath):
         self.data = data
         self.index = 0
         self.root = root
-        self.init_text = "VIC"
-
+        self.filepath = filepath
         self.title_text = Text(height=2, width=100, font=("Times New Roman", 12), state=DISABLED)
         self.content_text = ScrolledText(height=20, width=100, font=("Times New Roman", 12), state=DISABLED)
         self.tag_text = Text(height=1, width=100, font=("Times New Roman", 12), state=DISABLED)
         self.label_entry = Entry(width=50)
-
+        self.goto_entry = Entry(width=10)  # for inputting the index to go to
+        self.goto_button = Button(text="Go to item", command=self.goto_item)  # the button to trigger the jump
+        self.save_changes_button = Button(text="Save Change", command=self.save_change)
+        self.quit_button = Button(text="Quit", command=self.save_to_file)
         self.setup_gui()
         self.load_item()
 
     def setup_gui(self):
         self.root.title("Hand label")
-        self.root.geometry("800x600+160+10")  # Change the numbers as needed
+        self.root.geometry("1000x600+160+10")
+
+        goto_frame = Frame(self.root)
+        goto_frame.pack(side=RIGHT)
+        self.goto_button.pack(side=RIGHT)
+        self.goto_entry.pack(side=RIGHT)
 
         title_frame = Frame(self.root)
         title_frame.pack(fill=BOTH, expand=True)
@@ -65,14 +69,16 @@ class DataVisualizer:
 
         label_frame = Frame(self.root)
         label_frame.pack(fill=BOTH, expand=True)
-        Label(label_frame, text="Label").pack(side=LEFT)
-        self.label_entry.pack(pady=(0, 40))
+        Label(label_frame, text="Label").pack()
+        self.label_entry.pack()
+        self.save_changes_button.config(background="green", foreground="white")
+        self.quit_button.config(background="red", foreground="white")
+        self.save_changes_button.pack()
+        self.quit_button.pack(side=RIGHT)
 
-        Button(label_frame, text="Save Changes", command=self.save_changes).pack(side=RIGHT)
-
-        self.root.bind('<Return>', lambda event: self.save_changes())
+        self.root.bind('<Return>', lambda event: self.save_change())
         self.root.bind('<Right>', lambda event: self.next_item())
-        self.root.bind('<Left>', lambda event: self.previous_item())  # Bind left arrow to go back to the previous item
+        self.root.bind('<Left>', lambda event: self.previous_item())
 
     def load_item(self):
         item = self.data[self.index]
@@ -92,11 +98,17 @@ class DataVisualizer:
         self.tag_text.config(state=DISABLED)
 
         self.label_entry.delete(0, END)
-        self.label_entry.insert(0, str(predict_label(item["Content"], item["Tags"])))
+        self.label_entry.insert(0, item['Label'])
 
-    def save_changes(self):
+    def save_change(self):
         self.data[self.index]["Label"] = self.label_entry.get()
-        print("Saved changes")
+        print("Saved change")
+
+    def save_to_file(self):
+        with open(self.filepath, 'w', encoding='utf-8') as f:
+            json.dump(self.data, f, ensure_ascii=False, indent=4)
+        print("Saved data to file")
+        self.root.destroy()
 
     def next_item(self):
         self.index += 1
@@ -104,16 +116,31 @@ class DataVisualizer:
             self.load_item()
         return "break"
 
-    def previous_item(self):  # This method will load the previous item
+    def previous_item(self):
         if self.index > 0:
             self.index -= 1
             self.load_item()
         return "break"
 
+    def goto_item(self):
+        try:
+            index = int(self.goto_entry.get())
+            if 0 <= index < len(self.data):
+                self.index = index
+                self.load_item()
+            else:
+                print(f"Invalid index: {index}. Please enter a number between 0 and {len(self.data) - 1}.")
+        except ValueError:
+            print(f"Invalid input: {self.goto_entry.get()}. Please enter a number.")
 
-with open('../data/contents/data_vietnambiz_1_1.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
 
-root = Tk()
-app = DataVisualizer(data, root)
-root.mainloop()
+def hand_label(filepath):
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    root = Tk()
+    app = DataVisualizer(data, root, filepath=filepath)
+    root.mainloop()
+
+
+hand_label(filepath="../data/contents/data_vietnambiz_1_1.json")
