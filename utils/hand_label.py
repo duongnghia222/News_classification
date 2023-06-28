@@ -138,6 +138,11 @@ def hand_label(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
+    # for d in data:
+    #     d["Label"] = predict_label(d["Content"], d['Tags'])
+    # with open(filepath, 'w', encoding='utf-8') as f:
+    #     json.dump(data, f, ensure_ascii=False, indent=4)
+
     root = Tk()
     app = DataVisualizer(data, root, filepath=filepath)
     root.mainloop()
