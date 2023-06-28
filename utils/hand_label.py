@@ -1,29 +1,6 @@
 import json
-import re
-import pandas as pd
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
-
-list_stock_codes = []
-df_hose_tickers = pd.read_csv('../data/tickers/hose_tickers.csv')
-df_hnx_tickers = pd.read_csv('../data/tickers/hnx_tickers.csv')
-df_uc_tickers = pd.read_csv('../data/tickers/uc_tickers.csv')
-list_stock_codes.extend(df_hose_tickers['Stock Code'].tolist())
-list_stock_codes.extend(df_hnx_tickers['Stock Code'].tolist())
-list_stock_codes.extend(df_uc_tickers['Stock Code'].tolist())
-
-
-def predict_label(text, tags):
-    for tag in tags:
-        if tag.upper() in list_stock_codes:
-            return str(tag).upper()
-    matches = re.findall(r"\(Mã: ([A-Z]{3})\)", text)
-    if len(matches) > 3:
-        return ""
-    for match in matches:
-        if match in list_stock_codes:
-            return str(match).upper()
-    return ""
 
 
 class DataVisualizer:
@@ -137,11 +114,6 @@ class DataVisualizer:
 def hand_label(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
-
-    # for d in data:
-    #     d["Label"] = predict_label(d["Content"], d['Tags'])
-    # with open(filepath, 'w', encoding='utf-8') as f:
-    #     json.dump(data, f, ensure_ascii=False, indent=4)
 
     root = Tk()
     app = DataVisualizer(data, root, filepath=filepath)
