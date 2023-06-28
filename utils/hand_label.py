@@ -12,9 +12,11 @@ class DataVisualizer:
         self.title_text = Text(height=2, width=100, font=("Times New Roman", 12), state=DISABLED)
         self.content_text = ScrolledText(height=20, width=100, font=("Times New Roman", 12), state=DISABLED)
         self.tag_text = Text(height=1, width=100, font=("Times New Roman", 12), state=DISABLED)
+        self.index_text = Text(height=1, width=1, font=("Times New Roman", 12), state=DISABLED)
+        self.word_count = Text(height=1, width=1, font=("Times New Roman", 12), state=DISABLED)
         self.label_entry = Entry(width=50)
         self.goto_entry = Entry(width=10)  # for inputting the index to go to
-        self.goto_button = Button(text="Go to item", command=self.goto_item)  # the button to trigger the jump
+        self.goto_button = Button(text="Go to index", command=self.goto_item)  # the button to trigger the jump
         self.save_changes_button = Button(text="Save Change", command=self.save_change)
         self.quit_button = Button(text="Quit", command=self.save_to_file)
         self.setup_gui()
@@ -26,8 +28,11 @@ class DataVisualizer:
 
         goto_frame = Frame(self.root)
         goto_frame.pack(side=RIGHT)
-        self.goto_button.pack(side=RIGHT)
-        self.goto_entry.pack(side=RIGHT)
+        self.goto_button.place(x=910, y=120, width=70, height=25)
+        self.goto_entry.place(x=930, y=90, width=30, height=25)
+        self.index_text.place(x=910, y=30, width=70, height=25)
+        Label(text="Word Count").place(x=910, y=250, width=70, height=25)
+        self.word_count.place(x=930, y=280, width=40, height=25)
 
         title_frame = Frame(self.root)
         title_frame.pack(fill=BOTH, expand=True)
@@ -63,6 +68,16 @@ class DataVisualizer:
         self.title_text.delete('1.0', END)
         self.title_text.insert('1.0', item["Title"])
         self.title_text.config(state=DISABLED)
+
+        self.index_text.config(state=NORMAL)
+        self.index_text.delete('1.0', END)
+        self.index_text.insert('1.0', "Index: " + str(item["Index"]))
+        self.index_text.config(state=DISABLED)
+
+        self.word_count.config(state=NORMAL)
+        self.word_count.delete('1.0', END)
+        self.word_count.insert('1.0', count_words(item["Content"]))
+        self.word_count.config(state=DISABLED)
 
         self.content_text.config(state=NORMAL)
         self.content_text.delete('1.0', END)
@@ -109,6 +124,17 @@ class DataVisualizer:
                 print(f"Invalid index: {index}. Please enter a number between 0 and {len(self.data) - 1}.")
         except ValueError:
             print(f"Invalid input: {self.goto_entry.get()}. Please enter a number.")
+
+
+def count_words(text):
+    word_count = 0
+    words = text.split()
+    for word in words:
+        # Exclude punctuation marks from the word count
+        if not word.strip(".,;?!-"):
+            continue
+        word_count += 1
+    return word_count
 
 
 def hand_label(filepath):
