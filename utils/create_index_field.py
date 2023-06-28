@@ -13,6 +13,6 @@ def create_index_field(file_path):
         json.dump(data, json_file, ensure_ascii=False, indent=4)
 
 
-create_index_field("../data/contents/data_vietnambiz_1_1.json")
+create_index_field("../data/contents/data_vietnambiz_1_2.json")
 
 
