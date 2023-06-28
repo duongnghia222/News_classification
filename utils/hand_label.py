@@ -143,4 +143,4 @@ def hand_label(filepath):
     root.mainloop()
 
 
-hand_label(filepath="../data/contents/data_vietnambiz_1_1.json")
+hand_label(filepath="../data/contents/data_vietnambiz_1_2.json")
