@@ -14,6 +14,7 @@ class DataVisualizer:
         self.tag_text = Text(height=1, width=100, font=("Times New Roman", 12), state=DISABLED)
         self.index_text = Text(height=1, width=1, font=("Times New Roman", 12), state=DISABLED)
         self.word_count = Text(height=1, width=1, font=("Times New Roman", 12), state=DISABLED)
+        self.labeled_item = Text(height=1, width=1, font=("Times New Roman", 12), state=DISABLED)
         self.label_entry = Entry(width=50)
         self.goto_entry = Entry(width=10)  # for inputting the index to go to
         self.goto_button = Button(text="Go to index", command=self.goto_item)  # the button to trigger the jump
@@ -26,35 +27,63 @@ class DataVisualizer:
         self.root.title("Hand label")
         self.root.geometry("1000x600+160+10")
 
-        goto_frame = Frame(self.root)
-        goto_frame.pack(side=RIGHT)
-        self.goto_button.place(x=910, y=120, width=70, height=25)
-        self.goto_entry.place(x=930, y=90, width=30, height=25)
-        self.index_text.place(x=910, y=30, width=80, height=25)
-        Label(text="Word Count").place(x=910, y=250, width=70, height=25)
-        self.word_count.place(x=930, y=280, width=40, height=25)
+        # self.goto_button.place(x=910, y=120, width=70, height=25)
+        # self.goto_entry.place(x=930, y=90, width=30, height=25)
+        # self.index_text.place(x=910, y=30, width=80, height=25)
+        # Label(text="Word Count").place(x=910, y=250, width=70, height=25)
+        # self.word_count.place(x=930, y=280, width=40, height=25)
 
-        title_frame = Frame(self.root)
+        # self.goto_button.grid(row=0, column=3)
+        # self.root.grid_columnconfigure(3, minsize=100)
+        # self.goto_entry.grid(row=1, column=3)
+        # self.index_text.grid(row=2, column=3)
+        # Label(text="Word Count").grid(row=3, column=3)
+        # self.word_count.grid(row=4, column=3)
+        main_frame = Frame(self.root, width=850)
+        main_frame.pack(side=LEFT, expand=True, fill=BOTH)
+        right_frame = Frame(self.root, width=150)  # Added a background color for visibility
+        right_frame.pack(side=RIGHT, fill=BOTH)
+
+        index_frame = Frame(right_frame, width=150)
+        index_frame.pack(fill=Y, expand=True)
+        Label(index_frame, text="Index:", width=20).pack()
+        self.index_text = Text(index_frame, height=1, width=5, font=("Times New Roman", 12), state=DISABLED)
+        self.index_text.pack()
+        Label(index_frame, text="\nGo to index:", width=20).pack()
+        self.goto_entry = Entry(index_frame, width=10)
+        self.goto_entry.pack()
+        self.goto_button = Button(index_frame, text="Go", command=self.goto_item)
+        self.goto_button.pack()
+        Label(index_frame, text="\n\nWord Count").pack()
+        self.word_count = Text(index_frame, height=1, width=5, font=("Times New Roman", 12), state=DISABLED)
+        self.word_count.pack()
+
+        Label(index_frame, text="\n\nLabeled Item:").pack()
+        self.labeled_item = Text(index_frame, height=1, width=10, font=("Times New Roman", 12), state=DISABLED)
+        self.labeled_item.config(state=NORMAL)
+        self.labeled_item.insert('1.0', "{}/{}".format(labeled, total_item))
+        self.title_text.config(state=DISABLED)
+        self.labeled_item.pack()
+
+        title_frame = Frame(main_frame)
         title_frame.pack(fill=BOTH, expand=True)
         Label(title_frame, text="Title").pack()
         self.title_text.pack()
 
-        content_frame = Frame(self.root)
+        content_frame = Frame(main_frame)
         content_frame.pack(fill=BOTH, expand=True)
         Label(content_frame, text="Content").pack()
         self.content_text.pack()
 
-        tag_frame = Frame(self.root)
-        tag_frame.pack(fill=X, expand=True)
-        Label(tag_frame, text="Tags").pack()
+        tag_frame = Frame(main_frame)
+        tag_frame.pack(fill=BOTH, expand=True)
+        # Label(tag_frame, text="Tags").pack(side=LEFT)
         self.tag_text.pack(fill=X, expand=True)
 
-        label_frame = Frame(self.root)
+        label_frame = Frame(main_frame)
         label_frame.pack(fill=BOTH, expand=True)
-        Label(label_frame, text="Label").pack()
+        # Label(label_frame, text="Label").pack()
         self.label_entry.pack()
-        self.save_changes_button.config(background="green", foreground="white")
-        self.quit_button.config(background="red", foreground="white")
         self.save_changes_button.pack()
         self.quit_button.pack(side=RIGHT)
 
@@ -71,7 +100,7 @@ class DataVisualizer:
 
         self.index_text.config(state=NORMAL)
         self.index_text.delete('1.0', END)
-        self.index_text.insert('1.0', "Index: " + str(item["Index"]))
+        self.index_text.insert('1.0', str(item["Index"]))
         self.index_text.config(state=DISABLED)
 
         self.word_count.config(state=NORMAL)
@@ -140,10 +169,17 @@ def count_words(text):
 def hand_label(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
-
+    global labeled
+    global total_item
+    for d in data:
+        if d['Label'] != "":
+            labeled += 1
+    total_item = len(data)
     root = Tk()
     app = DataVisualizer(data, root, filepath=filepath)
     root.mainloop()
 
 
+labeled = 0
+total_item = 0
 hand_label(filepath="../data/contents/data_vietnambiz_1_1.json")
