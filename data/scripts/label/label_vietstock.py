@@ -22,6 +22,9 @@ def replace_space(stock_list):
     """
     return list(map(lambda x: (x.replace(u'\xa0', u' ').encode('utf-8')).decode(), stock_list))
 
+def reduce_element(lst):
+    return list(set(list(filter(lambda x: x not in ['CTC', 'USD'], lst))))
+
 def get_label(readfile_path, writefile_path = None):
     with open(readfile_path, mode='r', encoding='utf-8') as f:
         data = json.load(f)
@@ -35,12 +38,22 @@ def get_label(readfile_path, writefile_path = None):
         # if i != 3316: continue
         add_label = ""
         input = data[i]['Content']
-        hose_lst = re.findall(pattern=hose_pattern, string=input)
-        hnx_lst = re.findall(pattern=hnx_pattern, string=input)
-        upcom_lst = re.findall(pattern=upcom_pattern, string=input)
+        hose_lst = reduce_element(re.findall(pattern=hose_pattern, string=input))
+        hnx_lst = reduce_element(re.findall(pattern=hnx_pattern, string=input))
+        upcom_lst = reduce_element(re.findall(pattern=upcom_pattern, string=input))
         if len(hose_lst) + len(hnx_lst) + len(upcom_lst) == 0:
             count_no_label += 1
+            content_codes = reduce_element(re.findall(pattern=ticker_pattern, string=input))
+            print(content_codes)
+            content_codes = list(filter(lambda x: x in ticker, content_codes))
+            print(content_codes)
             # continue
+            if len(content_codes) == 1:
+                if input.count(content_codes[0]) >= 5:
+                    add_label = content_codes[0]
+            else:
+                add_label = ""
+
         elif len(hose_lst) + len(hnx_lst) + len(upcom_lst) == 1:
             add_label = None
             if len(hose_lst) == 1: add_label = hose_lst
@@ -55,7 +68,7 @@ def get_label(readfile_path, writefile_path = None):
             # print(input)
             ticker_codes = []
             for tag in tags:
-                tag_code = re.findall(pattern=ticker_pattern, string=tag)
+                tag_code = reduce_element(re.findall(pattern=ticker_pattern, string=tag))
                 # print(tag_code)
                 if len(tag_code) > 0:
                     if tag_code[0] in ticker:
@@ -69,7 +82,7 @@ def get_label(readfile_path, writefile_path = None):
                 # print(input, tags)
             else:
                 for tk_code in ticker_codes:
-                    title_code = re.findall(pattern=f'({tk_code})', string=title)
+                    title_code = reduce_element(re.findall(pattern=f'({tk_code})', string=title))
                     if len(title_code) > 0:
                         add_label = title_code[0]
                         # print("TUEUEURUURUER")
