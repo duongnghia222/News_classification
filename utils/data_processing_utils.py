@@ -91,6 +91,24 @@ def assign_label(filepath):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 
-assign_label("../data/contents/data_vietnambiz_1_1.json")
+def export_raw_data(filepath, export_dir):
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    new_data = []
+    for d in data:
+        if d["Label"] != "":
+            new_data.append({
+                "Content": d["Title"] + d["Content"],
+                "Label": d["Label"]
+            })
+
+    with open(export_dir, 'w', encoding='utf-8') as f:
+        json.dump(new_data, f, ensure_ascii=False, indent=4)
+
+export_raw_data("../data/contents/data_vietnambiz_1_2.json", "../data/raw_data/raw_data_vietnambiz_2.json")
+
+
+# assign_label("../data/contents/data_vietnambiz_1_1.json")
 # create_index_field("../data/label/label_tinnhanhchungkhoan.json")
 # predict_label(" (Mã: PNJ)", [])
