@@ -71,11 +71,12 @@ def predict_label(text, tags):
     for tag in tags:
         if tag.upper() in list_stock_codes:
             return str(tag).upper()
-    matches = re.findall(r"Mã:\s?([A-Z0-9]{3})", text)
+    matches = re.findall(r"(?i)\bMã:\s{0,2}([A-Z0-9]{3})", text)
     if len(matches) >= 3:
         return ""
     for match in matches:
         if match in list_stock_codes:
+            print(match.upper())
             return str(match).upper()
     return ""
 
@@ -90,6 +91,6 @@ def assign_label(filepath):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 
-assign_label("../data/contents/data_vietnambiz_1_2.json")
+assign_label("../data/contents/data_vietnambiz_1_1.json")
 # create_index_field("../data/label/label_tinnhanhchungkhoan.json")
-# predict_label("Tập đoàn Vingroup (Mã: VIC) vừa công bố báo cáo tài chính hợp nhất quý II/2022 với sự sụt giảm về doanh thu do mảng bất động sản không còn đóng góp lớn.Tổng tài sản Tập đoàn Vingroup vượt ngưỡng 500.000 tỷ ", [])
+# predict_label(" (Mã: PNJ)", [])
