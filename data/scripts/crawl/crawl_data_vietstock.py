@@ -24,7 +24,9 @@ def crawl_text_and_tags(url, headers= HEADERS):
         if information:
             information = information.find_all("p")
             for passage in information:
-                if passage.get('class')not in ["pTitle", "pAuthor", "pSource"]:
+                if passage.get('class') is None:
+                    print("")
+                elif passage.get('class')[0] not in ['pTitle', "pAuthor", "pSource"]:
                     if news_content:
                         news_content += ' '
                     news_content += passage.text
@@ -43,7 +45,7 @@ def crawl_text_and_tags(url, headers= HEADERS):
         return news_tags     
     return crawl_text(), crawl_tags()
 
-with open('./data/links/news_links_vietstock.json', 'r', encoding='utf-8') as f:
+with open('./data/links/news_link_vietstock.json', 'r', encoding='utf-8') as f:
     data =json.load(f)
 
 result = []
@@ -51,9 +53,10 @@ result = []
 for idx in tqdm(range(len(data))):
     main_content, tags = crawl_text_and_tags(data[idx]['link'])
     dictionary = {
-        'title': data[idx]['title'],
-        'content': main_content,
-        'tags': tags
+        'Title': data[idx]['title'],
+        'Content': main_content,
+        'Tags': tags,
+        'Index': idx
     }
     result.append(dictionary)
 
