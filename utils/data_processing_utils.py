@@ -72,7 +72,8 @@ def predict_label(text, tags):
         if tag.upper() in list_stock_codes:
             return str(tag).upper()
     matches = re.findall(r"(?i)\bMã:\s{0,2}([A-Z0-9]{3})", text)
-    if len(matches) >= 3:
+    # matches = re.findall(r"Mã: ([A-Z]{3})", text)
+    if len(matches) >= 3 and len(tags) > 3:
         return ""
     for match in matches:
         if match in list_stock_codes:
@@ -109,6 +110,6 @@ def export_raw_data(filepath, export_dir):
 # export_raw_data("../data/contents/data_vietnambiz_1_2.json", "../data/raw_data/raw_data_vietnambiz_2.json")
 
 
+create_index_field("../data/contents/data_vietnambiz_2.json")
 assign_label("../data/contents/data_vietnambiz_2.json")
-# create_index_field("../data/contents/data_vietnambiz_2.json")
-# predict_label(" (Mã: PNJ)", [])
+# predict_label(" (Thuduc House, Mã: TDH)", [])

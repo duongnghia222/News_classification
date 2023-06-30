@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import os
-import unicodedata
 
 
 def crawl_text(url):
@@ -22,9 +21,8 @@ def crawl_text(url):
         if 'show-placeholder' in p.get('class', []) or 'NLPlaceholderShow' in p.get('class', []):
             continue
         text = " " + p.get_text(strip=False)
-        normalized_text = unicodedata.normalize("NFKD", text)
         # Append the normalized text within each p tag to the string, replacing NNBS with a space
-        extracted_text += normalized_text.replace('\xa0', ' ').replace('\u00A0', ' ')
+        extracted_text += text.replace('\xa0', ' ').replace('\u00A0', ' ')
 
     # get tag
     item_tags = []
@@ -57,8 +55,8 @@ def loop_item(start, end):
             print("skip")
 
 
-from_file = '../../links/news_link_vietnambiz_2.json'
-to_file = '../../contents/data_vietnambiz_2.json'
+from_file = '../../links/news_link_vietnambiz_1.json'
+to_file = '../../contents/data_vietnambiz_1.json'
 
 if os.path.exists(from_file):
     with open(from_file, 'r', encoding='utf-8') as f:
