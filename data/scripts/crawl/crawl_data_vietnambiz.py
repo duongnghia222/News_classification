@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import os
+import unicodedata
 
 
 def crawl_text(url):
@@ -18,8 +19,12 @@ def crawl_text(url):
     p_tags = content_div.find_all("p")
 
     for p in p_tags:
-        # Append the text within each p tag to the string
-        extracted_text += p.get_text(strip=True)
+        if 'show-placeholder' in p.get('class', []) or 'NLPlaceholderShow' in p.get('class', []):
+            continue
+        text = " " + p.get_text(strip=False)
+        normalized_text = unicodedata.normalize("NFKD", text)
+        # Append the normalized text within each p tag to the string, replacing NNBS with a space
+        extracted_text += normalized_text.replace('\xa0', ' ').replace('\u00A0', ' ')
 
     # get tag
     item_tags = []
@@ -41,7 +46,6 @@ def loop_item(start, end):
         text, item_tags = crawl_text(data[i]['Link'])
         if text is None and item_tags is None:
             continue
-        print(item_tags)
         item = {
                 'Title': data[i]['Title'],
                 'Content': text,
@@ -53,19 +57,22 @@ def loop_item(start, end):
             print("skip")
 
 
-if os.path.exists('./data/links/news_link_vietnambiz_2.json'):
-    with open('./data/links/news_link_vietnambiz_2.json', 'r', encoding='utf-8') as f:
+from_file = '../../links/news_link_vietnambiz_2.json'
+to_file = '../../contents/data_vietnambiz_2.json'
+
+if os.path.exists(from_file):
+    with open(from_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 number_of_item = len(data)
 
-if os.path.exists('./data/contents/data_vietnambiz_1_2.json'):
+if os.path.exists(to_file):
     print("---- Continue ----")
-    with open('./data/contents/data_vietnambiz_1_2.json', 'r', encoding='utf-8') as f:
+    with open(to_file, 'r', encoding='utf-8') as f:
         output = json.load(f)
 else:
     output = []
-loop_item(len(output), len(output) + 2000)
-with open('./data/contents/data_vietnambiz_1_2.json', 'w', encoding='utf-8') as f:
+loop_item(len(output), len(output) + 5000)
+with open(to_file, 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=4)
 
 
