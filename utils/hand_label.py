@@ -182,4 +182,4 @@ def hand_label(filepath):
 
 labeled = 0
 total_item = 0
-hand_label(filepath="../data/contents/data_vietnambiz_2.json")
+hand_label(filepath="./data/raw_data/raw_data_vietstock.json")
