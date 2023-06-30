@@ -107,9 +107,9 @@ def export_raw_data(filepath, export_dir):
     with open(export_dir, 'w', encoding='utf-8') as f:
         json.dump(new_data, f, ensure_ascii=False, indent=4)
 
-# export_raw_data("../data/contents/data_vietnambiz_1_2.json", "../data/raw_data/raw_data_vietnambiz_2.json")
+export_raw_data("../data/contents/data_vietnambiz_2.json", "../data/raw_data/raw_data_vietnambiz_2.json")
 
 
-create_index_field("../data/contents/data_vietnambiz_2.json")
-assign_label("../data/contents/data_vietnambiz_2.json")
+# create_index_field("../data/contents/data_vietnambiz_2.json")
+# assign_label("../data/contents/data_vietnambiz_2.json")
 # predict_label(" (Thuduc House, Mã: TDH)", [])
