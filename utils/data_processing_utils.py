@@ -100,16 +100,50 @@ def export_raw_data(filepath, export_dir):
     for d in data:
         if d["Label"] != "":
             new_data.append({
-                "Content": d["Title"] +". " +  d["Content"],
+                "Content": d["Title"] + ". " + d["Content"],
                 "Label": d["Label"]
             })
 
     with open(export_dir, 'w', encoding='utf-8') as f:
         json.dump(new_data, f, ensure_ascii=False, indent=4)
 
-export_raw_data("../data/contents/data_vietnambiz_2.json", "../data/raw_data/raw_data_vietnambiz_2.json")
+
+def combine_2_json(file1, file2, outputfile):
+    # Load data from first file
+    with open(file1, 'r', encoding='utf-8') as f1:
+        data1 = json.load(f1)
+
+    # Load data from second file
+    with open(file2, 'r', encoding='utf-8') as f2:
+        data2 = json.load(f2)
+
+    last_index = data1[-1]['Index']
+    for item in data2:
+        last_index += 1
+        item['Index'] = last_index
+
+    # Combine data (Concatenate lists)
+    combined_data = data1 + data2
+
+    with open(outputfile, 'w', encoding='utf-8') as f:
+        json.dump(combined_data, f, ensure_ascii=False, indent=4)
 
 
+def json_to_csv(json_file, csv_file):
+    # Load data from JSON file
+    with open(json_file, 'r', encoding='utf-8-sig') as jf:
+        data = json.load(jf)
+
+    # Convert list of dictionaries into a DataFrame
+    df = pd.DataFrame(data)
+
+    # Write DataFrame to CSV file
+    df.to_csv(csv_file, index=False, encoding='utf-8-sig')
+
+
+# export_raw_data("../data/contents/data_vietnambiz.json", "../data/raw_data/raw_data_vietnambiz.json")
+# combine_2_json("../data/contents/data_vietnambiz_1.json", "../data/contents/data_vietnambiz_2.json", "../data/contents/data_vietnambiz.json")
+# json_to_csv("../data/raw_data/raw_data_vietnambiz.json", "../data/raw_data/raw_data_vietnambiz.csv")
 # create_index_field("../data/contents/data_vietnambiz_2.json")
 # assign_label("../data/contents/data_vietnambiz_2.json")
 # predict_label(" (Thuduc House, Mã: TDH)", [])

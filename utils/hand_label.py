@@ -182,4 +182,8 @@ def hand_label(filepath):
 
 labeled = 0
 total_item = 0
+<<<<<<< HEAD
 hand_label(filepath="./data/raw_data/raw_data_vietstock.json")
+=======
+hand_label(filepath="../data/contents/data_vietnambiz.json")
+>>>>>>> 24863fe (data visualize)
