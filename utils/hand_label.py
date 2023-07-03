@@ -19,7 +19,7 @@ class DataVisualizer:
         self.goto_entry = Entry(width=10)  # for inputting the index to go to
         self.goto_button = Button(text="Go to index", command=self.goto_item)  # the button to trigger the jump
         self.save_changes_button = Button(text="Save Change", command=self.save_change)
-        self.quit_button = Button(text="Quit", command=self.save_to_file)
+        self.quit_button = Button(text="Save and Quit", command=self.save_to_file)
         self.setup_gui()
         self.load_item()
 
@@ -105,7 +105,7 @@ class DataVisualizer:
 
         self.word_count.config(state=NORMAL)
         self.word_count.delete('1.0', END)
-        self.word_count.insert('1.0', count_words(item["Content"]))
+        self.word_count.insert('1.0', str(count_words(item["Content"])))
         self.word_count.config(state=DISABLED)
 
         self.content_text.config(state=NORMAL)
@@ -182,8 +182,5 @@ def hand_label(filepath):
 
 labeled = 0
 total_item = 0
-<<<<<<< HEAD
-hand_label(filepath="./data/raw_data/raw_data_vietstock.json")
-=======
+
 hand_label(filepath="../data/contents/data_vietnambiz.json")
->>>>>>> 24863fe (data visualize)

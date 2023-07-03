@@ -30,3 +30,4 @@ print(label_counts.describe())
 # Loop over each unique label and print its count
 for label, count in label_counts.items():
     print(f"Label: {label}, Count: {count}")
+
