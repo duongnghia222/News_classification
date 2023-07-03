@@ -115,7 +115,7 @@ class DataVisualizer:
 
         self.tag_text.config(state=NORMAL)
         self.tag_text.delete('1.0', END)
-        self.tag_text.insert('1.0', ', '.join(item["Tags"]))
+        self.tag_text.insert('1.0', ', '.join(item["Tag"])) # sua lai
         self.tag_text.config(state=DISABLED)
 
         self.label_entry.delete(0, END)
@@ -183,4 +183,4 @@ def hand_label(filepath):
 labeled = 0
 total_item = 0
 
-hand_label(filepath="../data/contents/data_vietnambiz.json")
+hand_label(filepath="./data/label/label_tinnhanhchungkhoan.json")
