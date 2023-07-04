@@ -141,9 +141,19 @@ def json_to_csv(json_file, csv_file):
     df.to_csv(csv_file, index=False, encoding='utf-8-sig')
 
 
-# export_raw_data("../data/contents/data_vietnambiz.json", "../data/raw_data/raw_data_vietnambiz.json")
+def merge_csv(file1, file2, file3, csv_file):
+    df1 = pd.read_csv(file1, encoding='utf-8')
+    df2 = pd.read_csv(file2, encoding='utf-8')
+    df3 = pd.read_csv(file3, encoding='utf-8')
+    csv_final = pd.concat([df1, df2, df3])
+    csv_final.to_csv(csv_file, index=False, encoding='utf-8')
+
+# export_raw_data("../data/contents/data_tinnhanhchungkhoan.json", "../data/raw_data/raw_data_vietnambiz.json")
 # combine_2_json("../data/contents/data_vietnambiz_1.json", "../data/contents/data_vietnambiz_2.json", "../data/contents/data_vietnambiz.json")
-# json_to_csv("../data/raw_data/raw_data_vietnambiz.json", "../data/raw_data/raw_data_vietnambiz.csv")
+# json_to_csv("../data/raw_data/raw_data_tinnhanhchungkhoan.json", "../data/raw_data/raw_data_tinnhanhchungkhoan.csv")
+# json_to_csv("../data/raw_data/raw_data_vietstock.json", "../data/raw_data/raw_data_vietstock.csv")
 # create_index_field("../data/contents/data_vietnambiz_2.json")
 # assign_label("../data/contents/data_vietnambiz_2.json")
 # predict_label(" (Thuduc House, Mã: TDH)", [])
+merge_csv("../data/raw_data/raw_data_vietnambiz.csv", "../data/raw_data/raw_data_vietstock.csv",
+          "../data/raw_data/raw_data_tinnhanhchungkhoan.csv", "../data/raw_data/raw_data.csv")
