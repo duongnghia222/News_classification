@@ -3,3 +3,5 @@
 .env
 venv/
 __pycache__/
+NPL_news_classification_best_full_model.pt
+NPL_news_classification_best_model.pt
