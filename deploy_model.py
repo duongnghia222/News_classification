@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
 import torch
@@ -27,9 +28,19 @@ le = joblib.load('label_encoder.joblib')
 
 app = FastAPI()
 
+# Set up CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],
+)
+
 
 class Item(BaseModel):
     text: str
+
 
 @app.get("/")
 async def home():
@@ -45,7 +56,7 @@ async def predict(item: Item):
         truncation=True,
         max_length=256,
         return_token_type_ids=False,
-        pad_to_max_length=True,
+        padding='max_length',
         return_attention_mask=True,
         return_tensors='pt',  # Return PyTorch tensors
     )
