@@ -59,5 +59,5 @@ for article in data:
         
 
 # Ghi dữ liệu đã cập nhật vào file json mới
-with open('./data/label/label_tinnhanhchungkhoan.json', 'w', encoding='utf-8') as file:
+with open('./data/label/data_tinnhanhchungkhoan.json', 'w', encoding='utf-8') as file:
     json.dump(label_arti, file, ensure_ascii=False,indent=4)

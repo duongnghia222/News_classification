@@ -11,7 +11,7 @@ data_all =[]
 contents = []
 
 # Lấy link từ từng item
-with open('../../label/label_tinnhanhchungkhoan.json', 'r', encoding='utf-8-sig') as file:  # Thêm '-sig' để tự động loại bỏ BOM
+with open('../../contents/data_tinnhanhchungkhoan.json', 'r', encoding='utf-8-sig') as file:  # Thêm '-sig' để tự động loại bỏ BOM
     data = json.load(file)
     
 for item in data:

@@ -152,7 +152,7 @@ def merge_csv(file1, file2, file3, csv_file):
 # combine_2_json("../data/contents/data_vietnambiz_1.json", "../data/contents/data_vietnambiz_2.json", "../data/contents/data_vietnambiz.json")
 # json_to_csv("../data/raw_data/raw_data_tinnhanhchungkhoan.json", "../data/raw_data/raw_data_tinnhanhchungkhoan.csv")
 # json_to_csv("../data/raw_data/raw_data_vietstock.json", "../data/raw_data/raw_data_vietstock.csv")
-# create_index_field("../data/label/label_tinnhanhchungkhoan.json")
+# create_index_field("../data/label/data_tinnhanhchungkhoan.json")
 # assign_label("../data/contents/data_vietnambiz_2.json")
 # predict_label(" (Thuduc House, Mã: TDH)", [])
 merge_csv("../data/raw_data/raw_data_vietnambiz.csv", "../data/raw_data/raw_data_vietstock.csv",
